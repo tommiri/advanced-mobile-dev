@@ -1,13 +1,37 @@
 import { View, Text, StyleSheet, Image } from 'react-native';
 
+const WeatherView = ({
+  weatherData: { name, icon, temp, windSpeed },
+  isError,
+  style,
+}) => {
+  return (
+    <View style={style}>
+      {!name || isError ? (
+        // Use conditional rendering to show a message if there is no data
+        <Text style={styles.errorMsg}>
+          {!name
+            ? 'Enter a city and press the button to get the weather!'
+            : 'Invalid city name!'}
+        </Text>
+      ) : (
+        <>
+          <Text style={styles.cityName}>{name}</Text>
+          <Image
+            style={styles.icon}
+            source={{
+              uri: `http://openweathermap.org/img/wn/${icon}@4x.png`,
+            }}
+          ></Image>
+          <Text style={styles.stats}>{temp}&deg;C</Text>
+          <Text style={styles.stats}>{windSpeed} m/s</Text>
+        </>
+      )}
+    </View>
+  );
+};
+
 const styles = StyleSheet.create({
-  container: {
-    flex: 2,
-    marginTop: 80,
-    alignItems: 'center',
-    justifyContent: 'center',
-    gap: 5,
-  },
   cityName: {
     fontSize: 32,
   },
@@ -18,34 +42,10 @@ const styles = StyleSheet.create({
   stats: {
     fontSize: 24,
   },
+  errorMsg: {
+    fontSize: 32,
+    textAlign: 'center',
+  },
 });
-
-const WeatherView = ({ weatherData, error }) => {
-  if (error || !weatherData) {
-    return (
-      <View style={styles.container}>
-        <Text style={{ fontSize: 32, textAlign: 'center' }}>
-          {!weatherData
-            ? 'Enter a city and press the button to get the weather!'
-            : 'Invalid city name!'}
-        </Text>
-      </View>
-    );
-  }
-  const { name, weather, main, wind } = weatherData;
-  return (
-    <View style={styles.container}>
-      <Text style={styles.cityName}>{name}</Text>
-      <Image
-        style={styles.icon}
-        source={{
-          uri: `http://openweathermap.org/img/wn/${weather[0].icon}@4x.png`,
-        }}
-      ></Image>
-      <Text style={styles.stats}>{main.temp}&deg;C</Text>
-      <Text style={styles.stats}>{wind.speed} m/s</Text>
-    </View>
-  );
-};
 
 export default WeatherView;
