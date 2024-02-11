@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Weather App</string>
+    <string name="go_to_forecast">Go to forecast</string>
+    <string name="back_btn">Back</string>
+</resources>
